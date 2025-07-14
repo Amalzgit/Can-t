@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Catch meee!!!</title>
+  <title>Catch the Button</title>
   <style>
     body {
       margin: 0;
@@ -24,6 +24,7 @@
       border-radius: 6px;
       cursor: pointer;
       transition: top 0.2s, left 0.2s;
+      touch-action: manipulation;
     }
 
     #message {
@@ -35,6 +36,7 @@
       font-weight: bold;
       color: #333;
       display: none;
+      text-align: center;
     }
   </style>
 </head>
@@ -65,13 +67,16 @@
       button.style.top = `${randomY}px`;
     }
 
-    // Set initial position
+    // Initial random position
     moveButtonRandomly();
 
-    // Move when mouse enters
+    // Move on hover (desktop)
     button.addEventListener('mouseenter', moveButtonRandomly);
 
-    // On click: show win message
+    // Move on touch (mobile)
+    button.addEventListener('touchstart', moveButtonRandomly);
+
+    // Click or tap = Win
     button.addEventListener('click', () => {
       gameOver = true;
       button.style.display = 'none';
