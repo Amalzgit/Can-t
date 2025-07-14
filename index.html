@@ -49,6 +49,7 @@
     const button = document.getElementById('text');
     const message = document.getElementById('message');
     let gameOver = false;
+    let allowClick = false;
 
     function moveButtonRandomly() {
       if (gameOver) return;
@@ -67,17 +68,28 @@
       button.style.top = `${randomY}px`;
     }
 
-    // Initial random position
+    // Initial position
     moveButtonRandomly();
 
-    // Move on hover (desktop)
+    // Desktop: move on hover
     button.addEventListener('mouseenter', moveButtonRandomly);
 
-    // Move on touch (mobile)
-    button.addEventListener('touchstart', moveButtonRandomly);
+    // Touch: move immediately when finger touches
+    button.addEventListener('touchstart', (e) => {
+      e.preventDefault(); // stop tap/click
+      allowClick = false;
+      moveButtonRandomly();
 
-    // Click or tap = Win
+      // After a short delay, allow actual tap
+      setTimeout(() => {
+        allowClick = true;
+      }, 300);
+    });
+
+    // Click/tap: only allow if user is fast/lucky
     button.addEventListener('click', () => {
+      if (!allowClick || gameOver) return;
+
       gameOver = true;
       button.style.display = 'none';
       message.style.display = 'block';
